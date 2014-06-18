@@ -23,6 +23,7 @@
 		151813161951BF36008B5025 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 151812F21951BF35008B5025 /* UIKit.framework */; };
 		1518131E1951BF36008B5025 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1518131C1951BF36008B5025 /* InfoPlist.strings */; };
 		151813201951BF36008B5025 /* MyStuffTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1518131F1951BF36008B5025 /* MyStuffTests.m */; };
+		1518132B1951BFC6008B5025 /* MyWhatsit.m in Sources */ = {isa = PBXBuildFile; fileRef = 1518132A1951BFC6008B5025 /* MyWhatsit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,8 @@
 		1518131B1951BF36008B5025 /* MyStuffTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MyStuffTests-Info.plist"; sourceTree = "<group>"; };
 		1518131D1951BF36008B5025 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1518131F1951BF36008B5025 /* MyStuffTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyStuffTests.m; sourceTree = "<group>"; };
+		151813291951BFC6008B5025 /* MyWhatsit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWhatsit.h; sourceTree = "<group>"; };
+		1518132A1951BFC6008B5025 /* MyWhatsit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWhatsit.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +130,8 @@
 				1518130A1951BF36008B5025 /* MSDetailViewController.m */,
 				1518130C1951BF36008B5025 /* Images.xcassets */,
 				151812F51951BF35008B5025 /* Supporting Files */,
+				151813291951BFC6008B5025 /* MyWhatsit.h */,
+				1518132A1951BFC6008B5025 /* MyWhatsit.m */,
 			);
 			path = MyStuff;
 			sourceTree = "<group>";
@@ -261,6 +266,7 @@
 			files = (
 				151812FF1951BF36008B5025 /* MSAppDelegate.m in Sources */,
 				1518130B1951BF36008B5025 /* MSDetailViewController.m in Sources */,
+				1518132B1951BFC6008B5025 /* MyWhatsit.m in Sources */,
 				151813081951BF36008B5025 /* MSMasterViewController.m in Sources */,
 				151812FB1951BF35008B5025 /* main.m in Sources */,
 			);

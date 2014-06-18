@@ -10,12 +10,21 @@
 
 #import "MSDetailViewController.h"
 
+#import "MyWhatsit.h"
+
 @interface MSMasterViewController () {
-    NSMutableArray *_objects;
+    NSMutableArray *things;
 }
+
+- (void)whatsitDidChangeNotification:(NSNotification*)notification;
+
 @end
 
 @implementation MSMasterViewController
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)awakeFromNib
 {
@@ -23,6 +32,18 @@
         self.clearsSelectionOnViewWillAppear = NO;
         self.preferredContentSize = CGSizeMake(320.0, 600.0);
     }
+    
+    things = [@[
+                [[MyWhatsit alloc] initWithName:@"Gort" location:@"den"],
+                [[MyWhatsit alloc] initWithName:@"Disappearing TARDIS mug" location:@"kitchen"],
+                [[MyWhatsit alloc] initWithName:@"Robot USB drive" location:@"office"],
+                [[MyWhatsit alloc] initWithName:@"Sad Robot USB hub" location:@"office"],
+                [[MyWhatsit alloc] initWithName:@"Solar Powered Bunny" location:@"office"]
+    ] mutableCopy];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(whatsitDidChangeNotification:) name:kWhatsitDidChangeNotification object:nil];
+    
     [super awakeFromNib];
 }
 
@@ -45,10 +66,17 @@
 
 - (void)insertNewObject:(id)sender
 {
-    if (!_objects) {
-        _objects = [[NSMutableArray alloc] init];
+    if (!things) {
+        things = [[NSMutableArray alloc] init];
     }
-    [_objects insertObject:[NSDate date] atIndex:0];
+    
+    static unsigned int itemNumber = 1;
+    NSString *newItemName = [NSString stringWithFormat:@"My Item %u", itemNumber++];
+    NSString *newItemLocation = @"unknown";
+    
+    MyWhatsit *newItem = [[MyWhatsit alloc] initWithName:newItemName location:newItemLocation];
+    
+    [things insertObject:newItem atIndex:0];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
@@ -62,15 +90,19 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _objects.count;
+    return things.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 
-    NSDate *object = _objects[indexPath.row];
-    cell.textLabel.text = [object description];
+    MyWhatsit *thing = things[indexPath.row];
+    
+    cell.textLabel.text = thing.name;
+    cell.detailTextLabel.text = thing.location;
+    
     return cell;
 }
 
@@ -83,7 +115,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [_objects removeObjectAtIndex:indexPath.row];
+        [things removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
@@ -109,7 +141,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        NSDate *object = _objects[indexPath.row];
+        MyWhatsit *object = things[indexPath.row];
         self.detailViewController.detailItem = object;
     }
 }
@@ -118,8 +150,18 @@
 {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSDate *object = _objects[indexPath.row];
+        MyWhatsit *object = things[indexPath.row];
         [[segue destinationViewController] setDetailItem:object];
+    }
+}
+
+- (void)whatsitDidChangeNotification:(NSNotification *)notification {
+    NSUInteger index = [things indexOfObject:notification.object];
+    
+    if (index != NSNotFound) {
+        NSIndexPath *path = [NSIndexPath indexPathForItem:index inSection:0];
+        
+        [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 

@@ -8,9 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+#import "MyWhatsit.h"
+
 @interface MSDetailViewController : UIViewController <UISplitViewControllerDelegate>
 
-@property (strong, nonatomic) id detailItem;
+@property (strong, nonatomic) MyWhatsit *detailItem;
 
-@property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
+@property (weak, nonatomic) IBOutlet UITextField *nameField;
+@property (weak, nonatomic) IBOutlet UITextField *locationField;
+
+- (IBAction)changedDetail:(id)sender;
+
 @end

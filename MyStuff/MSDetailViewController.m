@@ -35,8 +35,9 @@
 {
     // Update the user interface for the detail item.
 
-    if (self.detailItem) {
-        self.detailDescriptionLabel.text = [self.detailItem description];
+    if (self.detailItem != nil) {
+        self.nameField.text = self.detailItem.name;
+        self.locationField.text = self.detailItem.location;
     }
 }
 
@@ -67,6 +68,16 @@
     // Called when the view is shown again in the split view, invalidating the button and popover controller.
     [self.navigationItem setLeftBarButtonItem:nil animated:YES];
     self.masterPopoverController = nil;
+}
+
+- (IBAction)changedDetail:(id)sender {
+    if (sender == self.nameField) {
+        self.detailItem.name = self.nameField.text;
+    } else if (sender == self.locationField) {
+        self.detailItem.location = self.locationField.text;
+    }
+    
+    [self.detailItem postDidChangeNotification];
 }
 
 @end
