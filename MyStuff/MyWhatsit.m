@@ -25,4 +25,12 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kWhatsitDidChangeNotification object:self];
 }
 
+- (UIImage*)viewImage {
+    if (self.image != nil) {
+        return self.image;
+    }
+    
+    return [UIImage imageNamed:@"camera"];
+}
+
 @end

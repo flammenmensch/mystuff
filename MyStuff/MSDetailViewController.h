@@ -10,12 +10,15 @@
 
 #import "MyWhatsit.h"
 
-@interface MSDetailViewController : UIViewController <UISplitViewControllerDelegate>
+@interface MSDetailViewController : UIViewController <UISplitViewControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate>
 
 @property (strong, nonatomic) MyWhatsit *detailItem;
 
 @property (weak, nonatomic) IBOutlet UITextField *nameField;
 @property (weak, nonatomic) IBOutlet UITextField *locationField;
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+
+- (IBAction)choosePicture:(id)sender;
 
 - (IBAction)changedDetail:(id)sender;
 

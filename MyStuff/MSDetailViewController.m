@@ -5,12 +5,14 @@
 //  Created by Алексей Протасов on 18.06.14.
 //  Copyright (c) 2014 Alexey Protasov. All rights reserved.
 //
-
+#import <MobileCoreServices/UTCoreTypes.h>
 #import "MSDetailViewController.h"
+
 
 @interface MSDetailViewController ()
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 - (void)configureView;
+- (void)presentImagePickerUsingCamera:(BOOL)useCamera;
 @end
 
 @implementation MSDetailViewController
@@ -38,6 +40,7 @@
     if (self.detailItem != nil) {
         self.nameField.text = self.detailItem.name;
         self.locationField.text = self.detailItem.location;
+        self.imageView.image = self.detailItem.viewImage;
     }
 }
 
@@ -78,6 +81,104 @@
     }
     
     [self.detailItem postDidChangeNotification];
+}
+
+- (IBAction)choosePicture:(id)sender {
+    if (self.detailItem == nil) {
+        return;
+    }
+    
+    BOOL hasPhotoLibrary = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary];
+    BOOL hasCamera = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+    
+    if (!hasPhotoLibrary && !hasCamera) {
+        return;
+    }
+    
+    if (hasPhotoLibrary && hasCamera) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Take a Picture", @"Choose a Photo", nil];
+        
+        [actionSheet showInView:self.view];
+        
+        return;
+    }
+    
+    [self presentImagePickerUsingCamera:hasCamera];
+}
+
+- (void)actionSheet:(UIActionSheet*)actionsheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+        case 1:
+            [self presentImagePickerUsingCamera:(buttonIndex==0)];
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)presentImagePickerUsingCamera:(BOOL)useCamera {
+    UIImagePickerController *cameraUI = [UIImagePickerController new];
+    
+    cameraUI.sourceType = (useCamera ? UIImagePickerControllerSourceTypeCamera : UIImagePickerControllerSourceTypePhotoLibrary);
+    
+    cameraUI.mediaTypes = @[(NSString*)kUTTypeImage];
+    cameraUI.delegate = self;
+    
+    [self presentViewController:cameraUI animated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    
+    if ([mediaType isEqualToString:(NSString*)kUTTypeImage]) {
+        UIImage *whatsitImage = info[UIImagePickerControllerEditedImage];
+        
+        if (whatsitImage == nil) {
+            whatsitImage = info[UIImagePickerControllerOriginalImage];
+        }
+        
+        if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+            UIImageWriteToSavedPhotosAlbum(whatsitImage, nil, nil, nil);
+        }
+        
+        CGImageRef coreGraphicsImage = whatsitImage.CGImage;
+        CGFloat height = CGImageGetHeight(coreGraphicsImage);
+        CGFloat width = CGImageGetWidth(coreGraphicsImage);
+        
+        CGRect crop;
+        
+        if (height > width) {
+            crop.size.height = crop.size.width = width;
+            crop.origin.x = 0;
+            crop.origin.y = floorf((height - width) / 2);
+        } else {
+            crop.size.height = crop.size.width = height;
+            crop.origin.y = 0;
+            crop.origin.x = floorf((width - height) / 2);
+        }
+        
+        CGImageRef croppedImage = CGImageCreateWithImageInRect(coreGraphicsImage, crop);
+        
+        whatsitImage = [UIImage imageWithCGImage:croppedImage scale:MAX(crop.size.height / 512, 1.0) orientation:whatsitImage.imageOrientation];
+        
+        CGImageRelease(croppedImage);
+        
+        _detailItem.image = whatsitImage;
+        self.imageView.image = whatsitImage;
+        
+        [_detailItem postDidChangeNotification];
+    }
+    
+    [self dismissImagePicker];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self dismissImagePicker];
+}
+
+- (void)dismissImagePicker {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

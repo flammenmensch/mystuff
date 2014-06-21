@@ -112,6 +112,25 @@
                                     <action selector="changedDetail:" destination="Ah7-4n-0Wa" eventType="editingDidEnd" id="579-LQ-TVO"/>
                                 </connections>
                             </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Picture" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ynp-0n-H7Y">
+                                <rect key="frame" x="20" y="273" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vx0-7W-WiF">
+                                <rect key="frame" x="40" y="302" width="240" height="240"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="KpK-sc-e6a"/>
+                                    <constraint firstAttribute="height" constant="240" id="bij-Y8-SZa"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="8F1-mE-0L5" appends="YES" id="qwV-6K-P4y"/>
+                                </connections>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -119,23 +138,34 @@
                             <constraint firstAttribute="trailing" secondItem="1v7-Tv-lzD" secondAttribute="trailing" constant="20" symbolic="YES" id="5Tq-OK-hCO"/>
                             <constraint firstItem="1v7-Tv-lzD" firstAttribute="leading" secondItem="MMQ-IT-qOo" secondAttribute="leading" constant="20" symbolic="YES" id="5lB-BQ-2q5"/>
                             <constraint firstItem="M5c-Ig-wf7" firstAttribute="top" secondItem="1v7-Tv-lzD" secondAttribute="bottom" constant="8" symbolic="YES" id="DxJ-3h-OhL"/>
+                            <constraint firstItem="vx0-7W-WiF" firstAttribute="top" secondItem="ynp-0n-H7Y" secondAttribute="bottom" constant="8" symbolic="YES" id="Gi3-Um-Uzp"/>
                             <constraint firstItem="1v7-Tv-lzD" firstAttribute="leading" secondItem="M5c-Ig-wf7" secondAttribute="leading" id="KHt-Q8-1aY"/>
+                            <constraint firstItem="vx0-7W-WiF" firstAttribute="centerX" secondItem="ynp-0n-H7Y" secondAttribute="centerX" id="MDq-Ke-2JO"/>
                             <constraint firstItem="iu1-Tp-mwS" firstAttribute="top" secondItem="9fS-2W-lZj" secondAttribute="bottom" constant="8" symbolic="YES" id="MZJ-lK-hXn"/>
                             <constraint firstItem="9fS-2W-lZj" firstAttribute="trailing" secondItem="M5c-Ig-wf7" secondAttribute="trailing" id="Pee-CP-4Cg"/>
                             <constraint firstItem="1v7-Tv-lzD" firstAttribute="top" secondItem="cIm-e0-J51" secondAttribute="bottom" constant="36" id="QWH-Dd-Htu"/>
                             <constraint firstItem="9fS-2W-lZj" firstAttribute="top" secondItem="M5c-Ig-wf7" secondAttribute="bottom" constant="25" id="gYy-Yu-lLL"/>
                             <constraint firstItem="9fS-2W-lZj" firstAttribute="leading" secondItem="M5c-Ig-wf7" secondAttribute="leading" id="oRL-ps-X8g"/>
                             <constraint firstItem="9fS-2W-lZj" firstAttribute="leading" secondItem="iu1-Tp-mwS" secondAttribute="leading" id="paU-tA-Ebw"/>
+                            <constraint firstItem="ynp-0n-H7Y" firstAttribute="trailing" secondItem="iu1-Tp-mwS" secondAttribute="trailing" id="rsP-cT-SMy"/>
+                            <constraint firstItem="ynp-0n-H7Y" firstAttribute="leading" secondItem="iu1-Tp-mwS" secondAttribute="leading" id="sIV-Zq-x51"/>
                             <constraint firstItem="9fS-2W-lZj" firstAttribute="trailing" secondItem="iu1-Tp-mwS" secondAttribute="trailing" id="uVf-Fz-LwC"/>
+                            <constraint firstItem="a0L-h9-sNL" firstAttribute="top" secondItem="vx0-7W-WiF" secondAttribute="bottom" constant="26" id="wNb-1O-cmP"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Detail" id="cra-N8-TIN"/>
                     <connections>
+                        <outlet property="imageView" destination="vx0-7W-WiF" id="vIg-mM-4um"/>
                         <outlet property="locationField" destination="iu1-Tp-mwS" id="W7R-rm-W1e"/>
                         <outlet property="nameField" destination="M5c-Ig-wf7" id="aUl-7d-pWp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lrm-kH-fPn" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="8F1-mE-0L5">
+                    <connections>
+                        <action selector="choosePicture:" destination="Ah7-4n-0Wa" id="2xV-Kn-afp"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="902" y="64"/>
         </scene>

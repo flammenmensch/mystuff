@@ -102,6 +102,7 @@
     
     cell.textLabel.text = thing.name;
     cell.detailTextLabel.text = thing.location;
+    cell.imageView.image = thing.viewImage;
     
     return cell;
 }
