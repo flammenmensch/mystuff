@@ -9,7 +9,9 @@
 #import "MSDetailViewController.h"
 
 
-@interface MSDetailViewController ()
+@interface MSDetailViewController () {
+    UIPopoverController *imagePopoverController;
+}
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
 - (void)configureView;
 - (void)presentImagePickerUsingCamera:(BOOL)useCamera;
@@ -73,6 +75,10 @@
     self.masterPopoverController = nil;
 }
 
+- (IBAction)dismissKeyboard:(id)sender {
+    [self.view endEditing:NO];
+}
+
 - (IBAction)changedDetail:(id)sender {
     if (sender == self.nameField) {
         self.detailItem.name = self.nameField.text;
@@ -90,6 +96,8 @@
     
     BOOL hasPhotoLibrary = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary];
     BOOL hasCamera = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+    
+    [self dismissKeyboard:self];
     
     if (!hasPhotoLibrary && !hasCamera) {
         return;
@@ -118,6 +126,8 @@
 }
 
 - (void)presentImagePickerUsingCamera:(BOOL)useCamera {
+    imagePopoverController = nil;
+    
     UIImagePickerController *cameraUI = [UIImagePickerController new];
     
     cameraUI.sourceType = (useCamera ? UIImagePickerControllerSourceTypeCamera : UIImagePickerControllerSourceTypePhotoLibrary);
@@ -125,7 +135,13 @@
     cameraUI.mediaTypes = @[(NSString*)kUTTypeImage];
     cameraUI.delegate = self;
     
-    [self presentViewController:cameraUI animated:YES completion:nil];
+    if (useCamera || UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        [self presentViewController:cameraUI animated:YES completion:nil];
+    } else {
+        imagePopoverController = [[UIPopoverController alloc] initWithContentViewController:cameraUI];
+        
+        [imagePopoverController presentPopoverFromRect:self.imageView.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -178,7 +194,12 @@
 }
 
 - (void)dismissImagePicker {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (imagePopoverController == nil) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [imagePopoverController dismissPopoverAnimated:YES];
+        imagePopoverController = nil;
+    }
 }
 
 @end

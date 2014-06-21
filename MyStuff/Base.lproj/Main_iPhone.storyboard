@@ -133,6 +133,7 @@
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="1v7-Tv-lzD" firstAttribute="trailing" secondItem="M5c-Ig-wf7" secondAttribute="trailing" id="20A-jE-RhT"/>
                             <constraint firstAttribute="trailing" secondItem="1v7-Tv-lzD" secondAttribute="trailing" constant="20" symbolic="YES" id="5Tq-OK-hCO"/>
@@ -152,6 +153,9 @@
                             <constraint firstItem="9fS-2W-lZj" firstAttribute="trailing" secondItem="iu1-Tp-mwS" secondAttribute="trailing" id="uVf-Fz-LwC"/>
                             <constraint firstItem="a0L-h9-sNL" firstAttribute="top" secondItem="vx0-7W-WiF" secondAttribute="bottom" constant="26" id="wNb-1O-cmP"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="dXp-YK-XHf" appends="YES" id="4KD-04-5SA"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Detail" id="cra-N8-TIN"/>
                     <connections>
@@ -164,6 +168,11 @@
                 <tapGestureRecognizer id="8F1-mE-0L5">
                     <connections>
                         <action selector="choosePicture:" destination="Ah7-4n-0Wa" id="2xV-Kn-afp"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="dXp-YK-XHf">
+                    <connections>
+                        <action selector="dismissKeyboard:" destination="Ah7-4n-0Wa" id="RiT-LJ-J7h"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

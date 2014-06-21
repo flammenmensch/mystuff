@@ -18,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *locationField;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
+- (IBAction)dismissKeyboard:(id)sender;
+
 - (IBAction)choosePicture:(id)sender;
 
 - (IBAction)changedDetail:(id)sender;
